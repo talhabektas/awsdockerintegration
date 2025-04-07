@@ -29,6 +29,8 @@ dependencies {
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    testImplementation 'com.h2database:h2'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -37,4 +39,11 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+        events "passed", "skipped", "failed"
+    }
 }
