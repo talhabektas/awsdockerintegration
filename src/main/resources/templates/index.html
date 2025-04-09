@@ -23,6 +23,9 @@
         .app-title {
             color: #0d6efd;
         }
+        .alert {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +33,17 @@
     <div class="header-container text-center">
         <h1 class="app-title">Person Management System</h1>
         <p class="lead">AWS Docker Deployment Demo</p>
+    </div>
+
+    <!-- Başarı veya hata mesajları -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -58,15 +72,26 @@
                     <div class="btn-group" role="group">
                         <a th:href="@{/update/{id}(id=${person.id})}" class="btn btn-warning btn-sm">Edit</a>
                         <a th:href="@{/delete/{id}(id=${person.id})}" class="btn btn-danger btn-sm"
-                           onclick="return confirm('Are you sure you want to delete this person?')">Delete</a>
+                           onclick="return confirm('Bu kişiyi silmek istediğinizden emin misiniz?')">Delete</a>
                     </div>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(persons)}">
-                <td colspan="4" class="text-center">No persons found. Add some!</td>
+                <td colspan="4" class="text-center">Kayıtlı kişi bulunamadı. Yeni bir kişi ekleyin!</td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header bg-info text-white">
+            Sistem Bilgileri
+        </div>
+        <div class="card-body">
+            <p><strong>Uygulama Adı:</strong> <span th:text="${@environment.getProperty('spring.application.name')}">Uygulama Adı</span></p>
+            <p><strong>Aktif Profil:</strong> <span th:text="${@environment.getActiveProfiles()[0]}">Profil</span></p>
+            <p><strong>Database URL:</strong> <span th:text="${@environment.getProperty('spring.datasource.url')}">URL</span></p>
+        </div>
     </div>
 
     <footer class="mt-5 text-center text-muted">
