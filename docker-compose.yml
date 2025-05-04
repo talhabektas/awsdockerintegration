@@ -23,7 +23,7 @@ services:
     environment:
       MYSQL_DATABASE: swe304docker
       MYSQL_ROOT_PASSWORD: 61611616
-      MYSQL_ROOT_HOST: '%'  # Tüm hostlardan bağlantıya izin ver
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3307:3306"
     volumes:
