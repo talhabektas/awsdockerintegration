@@ -50,7 +50,7 @@ jobs:
           docker push mehmettalha/awsdocker:latest
           docker push mehmettalha/awsdocker:${{ github.sha }}
 
-
+       #important step
       - name: Copy configuration files to AWS
         uses: appleboy/scp-action@master
         with:
