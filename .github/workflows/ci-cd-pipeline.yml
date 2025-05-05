@@ -51,26 +51,19 @@ jobs:
           docker push mehmettalha/awsdocker:latest
           docker push mehmettalha/awsdocker:${{ github.sha }}
 
-      # 7. AWS EC2'ye yapılandırma dosyalarını kopyalama
-      # (script kullanarak SSH yöntemiyle)
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.CLOUD_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ec2-107-21-155-238.compute-1.amazonaws.com >> ~/.ssh/known_hosts
-
-      - name: Copy files and restart application
-        run: |
-          # Dosyaları kopyala
-          scp -o StrictHostKeyChecking=no docker-compose.yml nginx.conf Dockerfile ubuntu@ec2-107-21-155-238.compute-1.amazonaws.com:/home/ubuntu/
-          
-          # Uygulamayı yeniden başlat
-          ssh -o StrictHostKeyChecking=no ubuntu@ec2-107-21-155-238.compute-1.amazonaws.com << 'EOF'
+      # 7. AWS EC2'ye deployment - En basit ve güvenli yöntemle
+      - name: Deploy to AWS EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 107.21.155.238
+          username: ubuntu
+          key: ${{ secrets.CLOUD_SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
             cd /home/ubuntu
             docker-compose down || true
             docker pull mehmettalha/awsdocker:latest
             docker-compose up -d
             echo "Uygulama başarıyla güncellendi ve yeniden başlatıldı"
             docker ps
-          EOF
