@@ -50,16 +50,13 @@ jobs:
         run: |
           docker push mehmettalha/awsdocker:latest
           docker push mehmettalha/awsdocker:${{ github.sha }}
-
-      # 7. AWS EC2'ye deployment - En basit ve güvenli yöntemle
+      #deploy to ec2
       - name: Deploy to AWS EC2
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@master
         with:
           host: 107.21.155.238
           username: ubuntu
           key: ${{ secrets.CLOUD_SSH_KEY }}
-          port: 22
-          script_stop: true
           script: |
             cd /home/ubuntu
             docker-compose down || true
