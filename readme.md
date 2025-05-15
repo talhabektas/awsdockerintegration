@@ -1,39 +1,73 @@
-# AWS Docker Projesi
 
-## Proje Açıklaması
-Bu projede, Spring Boot tabanlı bir web uygulaması Docker konteynerleri ile paketlendi ve AWS EC2 üzerinde yayınlandı. Proje, kişi bilgilerinin CRUD işlemlerini gerçekleştiren basit bir web uygulamasıdır.
+# AWS Docker Project
 
-## Kullanılan Teknolojiler
-- Spring Boot 3.4.2
-- MySQL 8.0
-- Docker ve Docker Compose
-- Nginx (Ters proxy olarak)
-- AWS EC2 (Ubuntu 22.04 LTS)
-- Gradle (Build tool)
-- Bootstrap 5 (Frontend styling)
+## 📌 Project Description
 
-## Mimari Yapı
-- **Spring Boot Uygulaması**: Person varlığı için CRUD işlemleri gerçekleştiren web uygulaması (8080 portunda çalışır)
-- **MySQL**: Verilerin kalıcı olarak saklandığı veritabanı
-- **Nginx**: 80 portundan gelen istekleri Spring Boot uygulamasına yönlendiren ters proxy
-- **Docker**: Tüm bileşenleri konteynerler içinde çalıştıran platform
+This project demonstrates the deployment of a Spring Boot-based web application using Docker containers on an AWS EC2 instance. The application performs basic CRUD operations for managing person information.
 
-## Proje Adımları
+## 🚀 Technologies Used
 
-### Yerel Geliştirme
-1. Spring Boot uygulamasının geliştirilmesi
-2. Gradle ile JAR dosyasının oluşturulması: `./gradlew build`
-3. Docker imajının oluşturulması: `docker build -t mehmettalha/awsdocker:latest .`
-4. Docker imajının test edilmesi: `docker-compose up`
+- **Spring Boot** 3.4.2  
+- **MySQL** 8.0  
+- **Docker & Docker Compose**  
+- **Nginx** (as a Reverse Proxy)  
+- **AWS EC2** (Ubuntu 22.04 LTS)  
+- **Gradle** (Build tool)  
+- **Bootstrap 5** (Frontend styling)
 
-### Docker Hub'a Gönderme
-1. Docker Hub'a giriş yapma: `docker login`
-2. Docker imajını gönderme: `docker push mehmettalha/awsdocker:latest`
+## 🏗️ Architectural Structure
 
-### AWS EC2 Üzerinde Dağıtım
-1. EC2 instance oluşturma (Ubuntu 22.04)
-2. EC2'ye SSH ile bağlanma
-3. Docker ve Docker Compose kurulumu
+- **Spring Boot Application**  
+  A RESTful web service that performs CRUD operations on a `Person` entity. (Runs on port **8080**)
+
+- **MySQL**  
+  Used for persistent storage of person data.
+
+- **Nginx**  
+  Acts as a reverse proxy forwarding HTTP requests from port **80** to **8080**.
+
+- **Docker**  
+  All components (Spring Boot App, MySQL, Nginx) run in isolated Docker containers via Docker Compose.
+
+---
+
+## 🔧 Project Steps
+
+### ✅ Local Development
+
+1. Develop the Spring Boot application.
+2. Build the application JAR using Gradle:
+   ```bash
+   ./gradlew build
+   ```
+3. Create the Docker image:
+   ```bash
+   docker build -t mehmettalha/awsdocker:latest .
+   ```
+4. Run locally using Docker Compose:
+   ```bash
+   docker-compose up
+   ```
+
+### ☁️ Push to Docker Hub
+
+1. Login to Docker Hub:
+   ```bash
+   docker login
+   ```
+2. Push the image:
+   ```bash
+   docker push mehmettalha/awsdocker:latest
+   ```
+
+### 🌐 Deployment on AWS EC2
+
+1. Launch an EC2 instance (Ubuntu 22.04).
+2. Connect via SSH:
+   ```bash
+   ssh -i <your-key.pem> ubuntu@<your-ec2-ip>
+   ```
+3. Install Docker and Docker Compose:
    ```bash
    sudo apt update
    sudo apt install docker.io docker-compose -y
@@ -41,21 +75,51 @@ Bu projede, Spring Boot tabanlı bir web uygulaması Docker konteynerleri ile pa
    sudo systemctl start docker
    sudo usermod -aG docker ubuntu
    ```
-4. Gerekli dosyaları EC2'ye kopyalama
+4. Copy project files to EC2:
    ```bash
    scp -i <your-key.pem> docker-compose.yml nginx.conf ubuntu@<your-ec2-ip>:~/
    ```
-5. Docker Compose ile uygulamayı başlatma
+5. Start the application:
    ```bash
    docker-compose up -d
    ```
 
-## Erişim Bilgileri
-- **Docker Hub**: https://hub.docker.com/r/mehmettalha/awsdocker
-- **AWS EC2**: http://[EC2-PUBLIC-IP]
+---
 
-## Güncelleme Notları
-- Port 8090'dan 8080'e değiştirildi
-- Frontend arayüzü Bootstrap 5 ile yeniden tasarlandı
-- Nginx yapılandırması iyileştirildi
-- Docker Compose servislerine restart politikaları eklendi
+## ⚙️ CI/CD Implementation
+
+Continuous Integration and Deployment (CI/CD) pipelines are implemented to automate:
+- Build
+- Test
+- Deployment
+
+This ensures fast, repeatable, and reliable application updates.
+
+---
+
+## 🌐 Access Information
+
+- **Docker Hub**: [https://hub.docker.com/r/mehmettalha/awsdocker](https://hub.docker.com/r/mehmettalha/awsdocker)
+- **AWS EC2 Public URL**: `http://[EC2-PUBLIC-IP]`
+
+---
+
+## 📝 Update Notes
+
+- ✅ Port changed from **8090** to **8080**
+- ✅ Frontend redesigned using **Bootstrap 5**
+- ✅ Improved **Nginx** configuration
+- ✅ Added **restart policies** in `docker-compose.yml`
+
+---
+
+## 📂 Project Structure
+
+```plaintext
+├── src/
+├── build.gradle
+├── Dockerfile
+├── docker-compose.yml
+├── nginx.conf
+└── README.md
+```
